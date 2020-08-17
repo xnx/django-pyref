@@ -1,0 +1,4 @@
+include LICENSE
+include README.rst
+recursive-include refs/static/refs *
+recursive-include refs/templates/refs *

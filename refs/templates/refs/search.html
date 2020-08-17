@@ -1,0 +1,30 @@
+{% extends "refs/base.html" %}
+{% load static pyref_tags %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'refs/css/refs.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+<h1>Reference Search</h1>
+
+<form action="" method='get'>
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Search">
+</form>
+
+{% if not refs %}
+<p>No references found matching this query.</p>
+{% else %}
+<p>{{ refs.count }} references.</p>
+{% for ref in refs %}
+<p>
+<a href="{% url "refs:edit" ref.pk %}"><img src="{% static 'refs/images/pencil.svg' %}"/></a>
+{% ref_html ref 3 %}</p>
+{% endfor %}
+{% endif %}
+
+{% endblock %}
+
