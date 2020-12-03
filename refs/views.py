@@ -15,9 +15,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .models import Ref, get_ref_from_doi
 from .utils import canonicalize_doi
-from .forms import RefForm, RefSearchForm
+from .forms import RefForm
+from .filters import RefFilter
 
 def edit(request, pk=None):
     c = {'pk': pk if pk else ''}
@@ -64,7 +66,10 @@ def resolve(request, pk=None):
 
 def ref_list(request):
     refs = Ref.objects.all()
-    c = {'refs': refs}
+    paginator = Paginator(refs, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    c = {'page_obj': page_obj, 'paginator': paginator}
     return render(request, 'refs/refs-list.html', c)
 
 def delete(request, pk):
@@ -72,29 +77,36 @@ def delete(request, pk):
     ref.delete()
     return HttpResponseRedirect('/refs/')
 
+
 def search(request):
-    form = RefSearchForm(request.GET)
-    c = {'form': form}
-    if form.is_valid():
-        refs = []
-        doi = form.cleaned_data['doi']
-        bibcode = form.cleaned_data['bibcode']
-        title = form.cleaned_data['title']
-        authors = form.cleaned_data['author']
-        if doi:
-            doi = canonicalize_doi(doi)
-            try:
-                refs = [Ref.objects.get(doi=doi)]
-            except Ref.DoesNotExist:
-                pass
-        elif bibcode:
-            try:
-                refs = [Ref.objects.get(bibcode=bibcode)]
-            except Ref.DoesNotExist:
-                pass
-        elif title:
-            refs = Ref.objects.filter(title__icontains=title)
-        elif authors:
-            refs = Ref.objects.filter(authors__icontains=authors)
-        c['refs'] = refs
+    ref_list = Ref.objects.all()
+    ref_filter = RefFilter(request.GET, queryset=ref_list)
+    nresults = ref_filter.qs.count()
+    filtered_qs = sorted(ref_filter.qs, key=lambda objects: objects.pk)
+
+    paginator = Paginator(filtered_qs, 10)
+
+    c = {}
+    if request.GET:
+        page = request.GET.get('page')
+        try:
+            response = paginator.page(page)
+        except PageNotAnInteger:
+            response = paginator.page(1)
+        except EmptyPage:
+            response = paginator.page(paginator.num_pages)
+
+        querydict = request.GET.copy()
+        try:
+            del querydict['page']
+        except KeyError:
+            pass
+        c['querystring'] = '&' + querydict.urlencode()
+    else:
+        response = None
+
+    c.update({'filter': ref_filter,
+              'filtered_refs': response,
+              'nresults': nresults,
+              'paginator': paginator})
     return render(request, 'refs/search.html', c)

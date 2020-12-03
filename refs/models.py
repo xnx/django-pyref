@@ -24,7 +24,7 @@ from .utils import ensure_https
 try:
     from django.conf import settings
     ADS_TOKEN = settings.ADS_TOKEN
-except ImportError:
+except (ImportError, AttributeError):
     ADS_TOKEN = ''
 
 class RefError(Exception):
@@ -36,6 +36,8 @@ class ADSError(RefError):
 
 class Ref(models.Model):
     """A literature reference, for example a journal article, book etc."""
+
+    source_type = 'article'
 
     # A list of the authors' names in a string as:
     # 'A. N. Other, B.-C. Person Jr., Ch. Someone-Someone, N. M. L. Haw Haw'
@@ -128,8 +130,9 @@ class Ref(models.Model):
         if s_url is None:
             s_url = self.url
         if s_url:
-            return '<span class="noprint"> [<a href="{}">link to article'\
-                    '</a>]</span>'.format(s_url)
+            url_or_doi = self.doi or s_url
+            return '<span class="noprint"> [<a href="{}">{}'\
+                    '</a>]</span>'.format(s_url, url_or_doi)
         return ''
 
     def _make_url_html_from_doi(self):
@@ -139,6 +142,10 @@ class Ref(models.Model):
             s_url = 'https://dx.doi.org/{}'.format(self.doi)
             return self._make_url_html(s_url)
         return ''
+
+    @property
+    def authors_list(self):
+        return self.authors.split(',')
 
     def shorten_authors(self, nmax=5, nret=1):
         """

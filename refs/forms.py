@@ -36,13 +36,3 @@ class RefForm(forms.ModelForm):
             pass
 
         return self.cleaned_data['doi']
-
-class RefSearchForm(forms.Form):
-
-    doi = forms.CharField(max_length=100, required=False)
-    bibcode = forms.CharField(max_length=19, required=False)
-    title = forms.CharField(max_length=100, required=False)
-    author = forms.CharField(max_length=100, required=False)
-
-    class Meta:
-        pass

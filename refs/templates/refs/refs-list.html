@@ -5,16 +5,29 @@
 <link rel="stylesheet" type="text/css" href="{% static 'refs/css/refs.css' %}" />
 {% endblock %}
 
+{% block extra_js %}
+<script>
+$(function() {
+    $('.delete-ref').click(function() {
+        return window.confirm("Are you sure you want to delete this reference?");
+    });
+});
+</script>
+{% endblock %}
+
 {% block content %}
 
 <h1>Reference List</h1>
 
-<p>{{ refs.count }} references.</p>
-{% for ref in refs %}
-<p>
-<a href="{% url "refs:delete" ref.pk %}"><img src="{% static 'refs/images/trashcan.svg' %}"/></a>
-<a href="{% url "refs:edit" ref.pk %}"><img src="{% static 'refs/images/pencil.svg' %}"/></a>
-{% ref_html ref 3 %}</p>
+
+{% for ref in page_obj %}
+    <p>
+    <a class="delete-ref" href="{% url "refs:delete" ref.pk %}"><img src="{% static 'refs/images/trashcan.svg' %}"/></a>
+    <a href="{% url "refs:edit" ref.pk %}"><img src="{% static 'refs/images/pencil.svg' %}"/></a>
+    {% ref_html ref 3 %}
+   </p>
 {% endfor %}
 
-{% endblock %}
+{% include "refs/pagination.html" %}
+
+{% endblock %} 

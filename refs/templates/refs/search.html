@@ -9,22 +9,75 @@
 
 <h1>Reference Search</h1>
 
-<form action="" method='get'>
-{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="Search">
+
+<div class="container">
+
+<form method="get">
+<div class="card card-body search-card">
+<div class="container-fluid">
+
+<div class="row">
+<div class="form-group col-md-4 text-right">
+<label for="id_doi">{{ filter.form.doi.label }}:</label>
+</div>
+<div class="form-group col-md-8">
+{{ filter.form.doi }}
+</div>
+</div>
+
+<div class="row">
+<div class="form-group col-md-4 text-right">
+<label for="id_bibcode">{{ filter.form.bibcode.label }}:</label>
+</div>
+<div class="form-group col-md-8">
+{{ filter.form.bibcode }}
+</div>
+</div>
+
+<div class="row">
+<div class="form-group col-md-4 text-right">
+<label for="id_title">{{ filter.form.title.label }}:</label>
+</div>
+<div class="form-group col-md-8">
+{{ filter.form.title }}
+</div>
+</div>
+
+<div class="row">
+<div class="form-group col-md-4 text-right">
+<label for="id_author">{{ filter.form.author.label }}:</label>
+</div>
+<div class="form-group col-md-8">
+{{ filter.form.author }}
+</div>
+</div>
+
+<div class="row">
+<div class="form-group col-md-12 text-center">
+    <button type="submit" class="btn btn-primary">Search</button>
+</div>
+</div>
+
+</div>
+</div>
 </form>
 
-{% if not refs %}
-<p>No references found matching this query.</p>
-{% else %}
-<p>{{ refs.count }} references.</p>
-{% for ref in refs %}
+
+{% if filtered_refs is not None %}
+<h2 class="text-center">{{ nresults }} Results</h2>
+
+{% if nresults %}
+
+{% for ref in filtered_refs %}
 <p>
 <a href="{% url "refs:edit" ref.pk %}"><img src="{% static 'refs/images/pencil.svg' %}"/></a>
-{% ref_html ref 3 %}</p>
+{% ref_html ref 3 %}
+</p>
 {% endfor %}
+
+{% include "refs/pagination.html" with page_obj=filtered_refs %}
+
+{% endif %}
 {% endif %}
 
 {% endblock %}
-
