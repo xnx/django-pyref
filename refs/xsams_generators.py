@@ -1,5 +1,6 @@
 from xml.sax.saxutils import escape
 import datetime
+import urllib.parse
 from . import xsams_settings
 from .xsams_utils import (make_xsams_id, make_mandatory_tag, make_optional_tag,
                           xsams_source_type)
@@ -45,7 +46,7 @@ def xsams_source(ref):
     if ref.note:
         yield '<Comments>%s</Comments>' % escape(ref.note)
     yield '<Authors>'
-    for author in ref.author_list:
+    for author in ref.authors_list:
         yield '<Author><Name>%s</Name></Author>' % author
     yield '</Authors>'
     yield make_mandatory_tag('Title', escape(ref.title), '[This source does'
@@ -60,7 +61,7 @@ def xsams_source(ref):
     yield make_optional_tag('PageEnd', ref.page_end)
     yield make_optional_tag('ArticleNumber', ref.article_number)
     yield make_optional_tag('UniformResourceIdentifier',
-                    urllib.quote(ref.url, safe='%:=/?~#+!$,;\'@()*'))
+                    urllib.parse.quote(ref.url, safe='%:=/?~#+!$,;\'@()*'))
     yield make_optional_tag('DigitalObjectIdentifier', ref.doi)
     yield '</Source>\n'
 
@@ -114,7 +115,6 @@ def xsams_molecular_chemical_species(species):
     yield '</MolecularChemicalSpecies>\n'
 
 
-
 def xsams(refs):
     try:
         iter(refs)
@@ -124,4 +124,4 @@ def xsams(refs):
     timestamp = get_timestamp()
     yield from xsams_preamble(timestamp=timestamp)
     yield from xsams_sources(refs)
-    yield xsams_close()
+    yield from xsams_close()

@@ -19,7 +19,7 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from urllib.error import HTTPError
-from .utils import ensure_https
+from .utils import ensure_https, add_optional_kv
 
 try:
     from django.conf import settings
@@ -145,7 +145,7 @@ class Ref(models.Model):
 
     @property
     def authors_list(self):
-        return self.authors.split(',')
+        return [e.strip() for e in self.authors.split(',')]
 
     def shorten_authors(self, nmax=5, nret=1):
         """
@@ -234,6 +234,23 @@ class Ref(models.Model):
         """Return the HTML markup for the Ref."""
 
         return self.html_article(*args, **kwargs)
+
+    def json(self):
+        """Export the Ref as JSON."""
+
+        return json.dumps(self.serialize())
+
+    def serialize(self):
+        d = {'qid': self.qualified_id,
+             'source-type': self.source_type}
+        if self.authors:
+            d['authors'] = self.authors_list
+        fields = ('title', 'journal', 'volume', 'page-start', 'page-end',
+                  'article-number', 'year', 'note', 'doi', 'bibcode', 'url')
+        for k in fields:
+            add_optional_kv(d, k, self)
+        return d
+
 
     @classmethod
     def get_ref_from_doi(cls, doi, query_ads=True):
