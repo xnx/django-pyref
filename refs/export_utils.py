@@ -16,8 +16,8 @@ def add_headers(headers, response):
     return response
 
 
-def export_xsams(filtered_qs):
-    response = HttpResponse(xsams(filtered_qs), 'text/xml')
+def export_xsams(filtered_qs, **kwargs):
+    response = HttpResponse(xsams(filtered_qs, **kwargs), 'text/xml')
     # Windows doesn't like colons: replace them with hyphens in the filename.
     timestamp = get_timestamp().replace(':','-')
     filename = '{}-{}.xsams'.format(NODEID, timestamp)
@@ -51,9 +51,9 @@ _export_refs = {
     'json': export_json,
 }
 
-def export_refs(filtered_qs, output_format):
+def export_refs(filtered_qs, output_format, **kwargs):
     try:
-        return _export_refs[output_format.lower()](filtered_qs)
+        return _export_refs[output_format.lower()](filtered_qs, **kwargs)
     except KeyError:
         raise Http404
 

@@ -128,4 +128,4 @@ def xsams_source_type(source_type):
     xsams_source_types = {
         'article': 'journal',
     }
-    return xsams_source_types.get(source_type)
+    return xsams_source_types.get(source_type, source_type)

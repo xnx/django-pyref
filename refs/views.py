@@ -16,11 +16,17 @@ from django.shortcuts import render, get_object_or_404
 from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib.auth.decorators import user_passes_test
 from .models import Ref, get_ref_from_doi
 from .utils import canonicalize_doi
 from .forms import RefForm
 from .filters import RefFilter
 
+
+def user_can_edit(u):
+    return u.groups.filter(name='can-edit-refs').exists() or u.is_superuser
+
+#@user_passes_test(user_can_edit)
 def edit(request, pk=None):
     c = {'pk': pk if pk else ''}
     if request.method == 'POST':
@@ -72,6 +78,8 @@ def ref_list(request):
     c = {'page_obj': page_obj, 'paginator': paginator}
     return render(request, 'refs/refs-list.html', c)
 
+
+#@user_passes_test(user_can_edit)
 def delete(request, pk):
     ref = get_object_or_404(Ref, pk=pk)
     ref.delete()

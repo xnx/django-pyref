@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: django-pyref
+Version: 0.3.1
+Summary: A package for managing bibliographic references
+Home-page: https://github.com/xnx/django-pyref
+Author: Frances Skinner, Iouli Gordon, Christian Hill, Robert Hargreaves, Kelly Lockhart
+Author-email: xn.hill@gmail.com
+License: UNKNOWN
+Description: django-pyref is a Python package for managing, importing and searching bibliographic references to scientific articles.
+        
+        Import of article metadata from DOI and Bibcode is supported.
+        
+        See https://github.com/xnx/django-pyref for more information.
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Requires-Python: >=3.4
+Description-Content-Type: text/markdown

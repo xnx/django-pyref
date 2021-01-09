@@ -42,7 +42,7 @@ def xsams_source(ref):
 
     """
 
-    yield '<Source sourceID="{}s">'.format(make_xsams_id('B', ref.id))
+    yield '<Source sourceID="{}">'.format(make_xsams_id('B', ref.id))
     if ref.note:
         yield '<Comments>%s</Comments>' % escape(ref.note)
     yield '<Authors>'
@@ -55,7 +55,7 @@ def xsams_source(ref):
                              '')
     # XXX what to do when the year is missing?
     yield make_mandatory_tag('Year', ref.year, '9999')
-    yield make_optional_tag('SourceName', ref.journal)
+    yield make_optional_tag('SourceName', ref.journal.replace('&', 'and'))
     yield make_optional_tag('Volume', ref.volume)
     yield make_optional_tag('PageBegin', ref.page_start)
     yield make_optional_tag('PageEnd', ref.page_end)
@@ -81,41 +81,7 @@ def xsams_sources(sources):
     yield '</Sources>\n'
 
 
-def xsams_molecular_chemical_species(species):
-    """
-    Yield the XML for the MolecularChemicalSpecies element describing the
-    isotopologue iso.
-
-    """
-
-    molecule = iso.molecule
-    yield '<MolecularChemicalSpecies>'
-    yield make_referenced_text_tag('OrdinaryStructuralFormula', iso.iso_name,
-         'An isotopologue of the molecule %s' % molecule.ordinary_formula, [])
-    yield make_optional_tag('StoichiometricFormula',
-                            molecule.stoichiometric_formula)
-    # XXX hard-code the ion-charge for now:
-    ion_charge = None
-    if molecule.ordinary_formula == 'NO+':
-        ion_charge = '1'
-    yield make_optional_tag('IonCharge', ion_charge)
-    yield make_referenced_text_tag('ChemicalName', molecule.common_name)
-    yield make_optional_tag('InChI', iso.InChI)
-    yield make_optional_tag('InChIKey', iso.InChIKey)
-
-    # XXX hard-code partition function output for now:
-    for chunk in make_partition_function_tag(iso):
-        yield chunk
-
-    yield make_optional_tag('MoleculeStructure',
-                            get_molecule_cml_contents(iso.cml))
-    yield '<StableMolecularProperties>'
-    yield make_datatype_tag('MolecularWeight',iso.mass, 'amu')
-    yield '</StableMolecularProperties>'
-    yield '</MolecularChemicalSpecies>\n'
-
-
-def xsams(refs):
+def xsams(refs, xsams_species=None):
     try:
         iter(refs)
     except TypeError:
@@ -123,5 +89,9 @@ def xsams(refs):
 
     timestamp = get_timestamp()
     yield from xsams_preamble(timestamp=timestamp)
+    if xsams_species:
+        yield xsams_species
+    else:
+        yield '<Species></Species>'
     yield from xsams_sources(refs)
     yield from xsams_close()
