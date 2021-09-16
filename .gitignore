@@ -4,5 +4,6 @@
 .DS_Store
 build/
 pyref.egg-info
+django_pyref.egg-info
 dist/
 res/

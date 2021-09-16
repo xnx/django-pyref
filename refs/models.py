@@ -39,6 +39,8 @@ class Ref(models.Model):
 
     source_type = 'article'
 
+    id = models.AutoField(primary_key=True)
+
     # A list of the authors' names in a string as:
     # 'A. N. Other, B.-C. Person Jr., Ch. Someone-Someone, N. M. L. Haw Haw'
     # DO NOT separate names with "AND" (even before the last author).

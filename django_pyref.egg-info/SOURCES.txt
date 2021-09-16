@@ -22,6 +22,7 @@ refs/xsams_utils.py
 refs/migrations/0001_initial.py
 refs/migrations/0002_auto_20190924_0929.py
 refs/migrations/0003_auto_20200213_1451.py
+refs/migrations/0004_ref_bibcode.py
 refs/migrations/__init__.py
 refs/static/refs/.DS_Store
 refs/static/refs/css/refs.css
