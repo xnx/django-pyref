@@ -24,7 +24,7 @@ def ensure_https(url):
 def canonicalize_doi(doi):
     """Remove https://dx.doi.org/ etc. from start of string doi."""
     patt = '^https?:\/\/(?:dx\.)?doi\.org/'
-    return re.sub(patt, '', doi)
+    return re.sub(patt, '', doi).lower()
 
 def add_optional_kv(d, key_name, obj, attr=None, func=None):
     if obj is None:
