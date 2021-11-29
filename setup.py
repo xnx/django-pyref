@@ -15,6 +15,7 @@ setup(
     description = 'A package for managing bibliographic references',
     long_description=long_description,
     long_description_content_type="text/markdown",
+    include_package_data=True,
     url = 'https://github.com/xnx/django-pyref',
     packages = find_packages(),
     classifiers=[
