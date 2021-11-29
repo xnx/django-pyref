@@ -352,7 +352,7 @@ def parse_citeproc_json(citeproc_json, ref=None, query_ads=True):
 
     cpd = json.loads(citeproc_json)
     # We only understand journal articles, for now.
-    if cpd['type'] != 'article-journal':
+    if cpd['type'] not in ('article-journal', 'journal-article'):
         raise NotImplementedError
 
     authors = get_citeproc_authors(cpd.get('author', ''))
