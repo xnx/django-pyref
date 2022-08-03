@@ -2,6 +2,9 @@
 *.swp
 *.swo
 .DS_Store
+.venv
+.coverage
+activate
 build/
 pyref.egg-info
 django_pyref.egg-info

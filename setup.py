@@ -1,34 +1,48 @@
 from setuptools import setup, find_packages
+from pathlib import Path
 
-long_description = """django-pyref is a Python package for managing, importing and searching bibliographic references to scientific articles.
+root = Path(__file__).parent.resolve()
 
-Import of article metadata from DOI and Bibcode is supported.
-
-See https://github.com/xnx/django-pyref for more information.
-"""
-# Read in dependencies list from requirements.txt
-thelibFolder = os.path.dirname(os.path.realpath(__file__))
-requirementPath = thelibFolder + '/requirements.txt'
-install_requires = []
-if os.path.isfile(requirementPath):
-    with open(requirementPath) as f:
-        install_requires = f.read().splitlines()
+# Get the long description from the README file
+long_description = (root / "README.rst").read_text(encoding="utf-8")
 
 setup(
-    name = 'django-pyref',
-    version = '0.5.0',
-    author = 'Frances Skinner, Iouli Gordon, Christian Hill, Robert Hargreaves, Kelly Lockhart',
-    author_email = 'xn.hill@gmail.com',
-    description = 'A package for managing bibliographic references',
+    name="django-ref",
+    version="0.5.2",
+    description="A Django app defining data models for managing "
+                "bibliographic references for scientific databases.",
     long_description=long_description,
-    long_description_content_type="text/markdown",
-    include_package_data=True,
-    url = 'https://github.com/xnx/django-pyref',
-    packages = find_packages(),
-    install_requires=install_requires,
+    long_description_content_type="text/x-rst",
+    url="https://github.com/xnx/django-valem",
+    author="Christian Hill, Frances Skinner, Iouli Gordon, Robert Hargreaves,"
+           " Kelly Lockhart",
+    author_email="ch.hill@iaea.org",
     classifiers=[
-        "Programming Language :: Python :: 3",
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Science/Research",
+        "Topic :: Scientific/Engineering :: Chemistry",
+        "Topic :: Scientific/Engineering :: Physics",
         "License :: OSI Approved :: Apache Software License",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3 :: Only",
+        "Framework :: Django",
+        "Operating System :: OS Independent",
     ],
-    python_requires='>=3.4',
+    keywords="django, database, references, citation",
+    package_dir={"": "src"},
+    packages=find_packages(where="src"),
+    python_requires=">=3.6",
+    install_requires=[
+        "Django>=3.2",
+        "requests>=2.28.1",
+    ],
+    extras_require={"dev": ["black", "coverage", "ipython"]},
+    project_urls={
+        "Bug Reports": "https://github.com/xnx/django-pyref/issues",
+    },
 )

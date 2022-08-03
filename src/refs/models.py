@@ -19,7 +19,7 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from urllib.error import HTTPError
-from .utils import ensure_https, add_optional_kv
+from ._utils import ensure_https, add_optional_kv
 
 try:
     from django.conf import settings
