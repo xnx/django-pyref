@@ -7,8 +7,8 @@ root = Path(__file__).parent.resolve()
 long_description = (root / "README.rst").read_text(encoding="utf-8")
 
 setup(
-    name="django-ref",
-    version="0.5.2",
+    name="django-pyref",
+    version="0.5.3",
     description="A Django app defining data models for managing "
     "bibliographic references for scientific databases.",
     long_description=long_description,
