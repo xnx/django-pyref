@@ -10,12 +10,12 @@ setup(
     name="django-ref",
     version="0.5.2",
     description="A Django app defining data models for managing "
-                "bibliographic references for scientific databases.",
+    "bibliographic references for scientific databases.",
     long_description=long_description,
     long_description_content_type="text/x-rst",
     url="https://github.com/xnx/django-valem",
     author="Christian Hill, Frances Skinner, Iouli Gordon, Robert Hargreaves,"
-           " Kelly Lockhart",
+    " Kelly Lockhart",
     author_email="ch.hill@iaea.org",
     classifiers=[
         "Development Status :: 3 - Alpha",

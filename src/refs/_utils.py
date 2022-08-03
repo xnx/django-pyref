@@ -14,26 +14,29 @@
 
 import re
 
+
 def ensure_https(url):
-    if url.startswith('https'):
+    if url.startswith("https"):
         return url
-    if url.startswith('http'):
-        return 'https' + url[4:]
-    return 'https://' + url
+    if url.startswith("http"):
+        return "https" + url[4:]
+    return "https://" + url
+
 
 def canonicalize_doi(doi):
     """Remove https://dx.doi.org/ etc. from start of string doi."""
-    patt = '^https?:\/\/(?:dx\.)?doi\.org/'
-    return re.sub(patt, '', doi).lower()
+    patt = "^https?:\/\/(?:dx\.)?doi\.org/"
+    return re.sub(patt, "", doi).lower()
+
 
 def add_optional_kv(d, key_name, obj, attr=None, func=None):
     if obj is None:
         return
     if attr is None:
-        attr = key_name.replace('-', '_')
+        attr = key_name.replace("-", "_")
 
     val = getattr(obj, attr)
-    if val is not None and val != '':
+    if val is not None and val != "":
         if func:
             val = getattr(val, func)()
         d[key_name] = val

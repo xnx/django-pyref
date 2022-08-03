@@ -1,6 +1,7 @@
 from django.test import TestCase
 from refs.models import Ref
 
+
 class TestRef(TestCase):
     def setUp(self):
         self.doi = "10.1016/j.adt.2016.09.002"

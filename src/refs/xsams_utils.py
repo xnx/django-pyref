@@ -8,7 +8,9 @@
 # Helper methods for writing XML tags for an XSAMS document.
 
 from . import xsams_settings
+
 NODEID = xsams_settings.NODEID
+
 
 def make_xsams_id(prefix, id, iso=None):
     """
@@ -16,8 +18,9 @@ def make_xsams_id(prefix, id, iso=None):
     for Sources, 'S' for States, etc., and id is an integer.
 
     """
-    
-    return '%s%s-%d' % (prefix, NODEID, id)
+
+    return "%s%s-%d" % (prefix, NODEID, id)
+
 
 def make_attrs_string(attrs):
     """
@@ -26,14 +29,15 @@ def make_attrs_string(attrs):
 
     """
 
-    #s_attrs = ''
-    #for attr_name, attr_value in attrs.items():
+    # s_attrs = ''
+    # for attr_name, attr_value in attrs.items():
     #    s_attrs = '%s %s="%s"' % (s_attrs, attr_name, attr_value)
-    return ' '.join(['%s="%s"' % x for x in attrs.items()])
+    return " ".join(['%s="%s"' % x for x in attrs.items()])
 
 
-def make_mandatory_tag(tag_name, contents, default='MISSING MANDATORY CONTENT',
-                       attrs={}):
+def make_mandatory_tag(
+    tag_name, contents, default="MISSING MANDATORY CONTENT", attrs={}
+):
     """
     Make and return a mandatory tag (element) for the XML document, falling
     back to default if contents is None.
@@ -43,7 +47,8 @@ def make_mandatory_tag(tag_name, contents, default='MISSING MANDATORY CONTENT',
     if contents is None:
         contents = default
     s_attrs = make_attrs_string(attrs)
-    return '<%s %s>%s</%s>' % (tag_name, s_attrs, contents, tag_name)
+    return "<%s %s>%s</%s>" % (tag_name, s_attrs, contents, tag_name)
+
 
 def make_optional_tag(tag_name, contents, attrs={}):
     """
@@ -53,9 +58,10 @@ def make_optional_tag(tag_name, contents, attrs={}):
     """
 
     if contents is None:
-        return ''
+        return ""
     s_attrs = make_attrs_string(attrs)
-    return '<%s %s>%s</%s>' % (tag_name, s_attrs, contents, tag_name)
+    return "<%s %s>%s</%s>" % (tag_name, s_attrs, contents, tag_name)
+
 
 def make_referenced_text_tag(name, value_text, comment=None, src_list=[]):
     """
@@ -70,35 +76,43 @@ def make_referenced_text_tag(name, value_text, comment=None, src_list=[]):
 
     """
 
-    tag_parts = ['<%s>' % name,]
+    tag_parts = [
+        "<%s>" % name,
+    ]
     if comment:
-        tag_parts.append(make_optional_tag('Comments', comment))
+        tag_parts.append(make_optional_tag("Comments", comment))
     for source_id in src_list:
-        tag_parts.append('<SourceRef>B%s-%d</SourceRef>' % (NODEID, source_id))
-    tag_parts.append('<Value>%s</Value>' % value_text)
-    tag_parts.append('</%s>' % name)
-    return '\n'.join(tag_parts)
+        tag_parts.append("<SourceRef>B%s-%d</SourceRef>" % (NODEID, source_id))
+    tag_parts.append("<Value>%s</Value>" % value_text)
+    tag_parts.append("</%s>" % name)
+    return "\n".join(tag_parts)
+
 
 def append_optional_tag(tag_list, tag):
-    """ Append tag to tag_list if it isn't an empty string. """
+    """Append tag to tag_list if it isn't an empty string."""
     if tag:
         tag_list.append(tag)
 
-def make_datatype_tag(name, value, units, error=None, comment=None,
-                      src_list=[], attrs={}):
+
+def make_datatype_tag(
+    name, value, units, error=None, comment=None, src_list=[], attrs={}
+):
     s_attrs = make_attrs_string(attrs)
-    tag_parts = ['<%s %s>' % (name, s_attrs),]
+    tag_parts = [
+        "<%s %s>" % (name, s_attrs),
+    ]
     if comment:
-        tag_parts.append(make_optional_tag('Comments', comment))
+        tag_parts.append(make_optional_tag("Comments", comment))
     for source_id in src_list:
-        tag_parts.append('<SourceRef>B%s-%d</SourceRef>' % (NODEID, source_id))
-    tag_parts.append(make_mandatory_tag('Value', value, '[Missing Value]',
-                                        {'units': units}))
-    accuracy_tag = make_optional_tag('Accuracy', error,
-                                     {'type': 'statistical'})
+        tag_parts.append("<SourceRef>B%s-%d</SourceRef>" % (NODEID, source_id))
+    tag_parts.append(
+        make_mandatory_tag("Value", value, "[Missing Value]", {"units": units})
+    )
+    accuracy_tag = make_optional_tag("Accuracy", error, {"type": "statistical"})
     append_optional_tag(tag_parts, accuracy_tag)
-    tag_parts.append('</%s>' % name)
-    return '\n'.join(tag_parts)
+    tag_parts.append("</%s>" % name)
+    return "\n".join(tag_parts)
+
 
 def make_pretty_list(vals, ncols=5):
     """
@@ -114,18 +128,20 @@ def make_pretty_list(vals, ncols=5):
     s = []
     for i, val in enumerate(vals):
         s.append(val)
-        if (i+1) % ncols:
-            s.append(' ')
+        if (i + 1) % ncols:
+            s.append(" ")
         else:
-            s.append('\n')
-    return ''.join(s)
+            s.append("\n")
+    return "".join(s)
+
 
 def escape_url(url):
-    url = url.replace('&', '%26')
+    url = url.replace("&", "%26")
+
 
 def xsams_source_type(source_type):
     # For now, only 'journal' source types are supported.
     xsams_source_types = {
-        'article': 'journal',
+        "article": "journal",
     }
     return xsams_source_types.get(source_type, source_type)
