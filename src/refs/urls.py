@@ -13,7 +13,7 @@
 #   limitations under the License.
 
 from django.urls import include, path, re_path
-from . import views
+from . import views, api_views
 
 app_name = "refs"
 urlpatterns = [
@@ -22,4 +22,5 @@ urlpatterns = [
     re_path(r"^resolve/(?:(?P<pk>\d+))?$", views.resolve, name="resolve"),
     re_path(r"^delete/(?P<pk>\d+)$", views.delete, name="delete"),
     re_path(r"^edit/(?:(?P<pk>\d+))?$", views.edit, name="edit"),
+    path("api/", api_views.endpoint, name="api"),
 ]
