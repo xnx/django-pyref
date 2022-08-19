@@ -8,14 +8,14 @@ long_description = (root / "README.rst").read_text(encoding="utf-8")
 
 setup(
     name="django-pyref",
-    version="0.5.5",
+    version="0.5.6",
     description="A Django app defining data models for managing "
     "bibliographic references for scientific databases.",
     long_description=long_description,
     long_description_content_type="text/x-rst",
     url="https://github.com/xnx/django-valem",
     author="Christian Hill, Frances Skinner, Iouli Gordon, Robert Hargreaves,"
-    " Kelly Lockhart",
+    " Kelly Lockhart, Dipti",
     author_email="ch.hill@iaea.org",
     classifiers=[
         "Development Status :: 3 - Alpha",

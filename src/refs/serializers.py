@@ -19,3 +19,7 @@ class RefSerializer(serializers.ModelSerializer):
             "bibcode",
             "url",
         )
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        return {instance.qualified_id: ret}
