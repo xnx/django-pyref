@@ -268,26 +268,6 @@ class Ref(models.Model):
 
         return json.dumps(self.serialize())
 
-    def serialize(self):
-        d = {"qid": self.qualified_id, "source-type": self.source_type}
-        if self.authors:
-            d["authors"] = self.authors_list
-        fields = (
-            "title",
-            "journal",
-            "volume",
-            "page-start",
-            "page-end",
-            "article-number",
-            "year",
-            "note",
-            "doi",
-            "bibcode",
-            "url",
-        )
-        for k in fields:
-            add_optional_kv(d, k, self)
-        return d
 
     @classmethod
     def get_ref_from_doi(cls, doi, query_ads=True):

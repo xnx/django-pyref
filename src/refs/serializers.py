@@ -6,6 +6,7 @@ class RefSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ref
         fields = (
+            "id",
             "authors",
             "title",
             "journal",
@@ -19,7 +20,3 @@ class RefSerializer(serializers.ModelSerializer):
             "bibcode",
             "url",
         )
-
-    def to_representation(self, instance):
-        ret = super().to_representation(instance)
-        return {instance.qualified_id: ret}
