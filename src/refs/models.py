@@ -268,7 +268,6 @@ class Ref(models.Model):
 
         return json.dumps(self.serialize())
 
-
     @classmethod
     def get_ref_from_doi(cls, doi, query_ads=True):
         citeproc_json = get_citeproc_json_from_doi(doi)

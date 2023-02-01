@@ -102,11 +102,27 @@ class TestRefSerializationt(TestCase):
         self.assertNotContains(response, "this is Ref 1")
         self.assertContains(response, "this is Ref 2")
 
-
     def test_serialize_ref(self):
         ref = Ref.objects.get(pk=1)
         serializer = RefSerializer(ref)
-        self.assertEqual(serializer.data, {'id': 1, 'authors': 'S. Niyonzima et.al.', 'title': 'Low-energy collisions between electrons and BeH+: this is Ref 1', 'journal': 'Atomic Data and Nuclear Data Tables', 'volume': '115-116', 'page_start': '287', 'page_end': '308', 'article_number': '', 'year': 2017, 'note': '', 'doi': '10.1016/j.adt.2016.09.002', 'bibcode': '', 'url': ''})
+        self.assertEqual(
+            serializer.data,
+            {
+                "id": 1,
+                "authors": "S. Niyonzima et.al.",
+                "title": "Low-energy collisions between electrons and BeH+: this is Ref 1",
+                "journal": "Atomic Data and Nuclear Data Tables",
+                "volume": "115-116",
+                "page_start": "287",
+                "page_end": "308",
+                "article_number": "",
+                "year": 2017,
+                "note": "",
+                "doi": "10.1016/j.adt.2016.09.002",
+                "bibcode": "",
+                "url": "",
+            },
+        )
 
         refs = Ref.objects.all()
         serializer = RefSerializer(refs, many=True)
@@ -114,7 +130,7 @@ class TestRefSerializationt(TestCase):
 
     def test_deserialize_ref(self):
         ref_json = """{"authors":"J. Schweinzer, H. Winter","title":"Single electron capture from alkali atoms by slow doubly charged ions. I. He<sup>2+</sup>(0.5-6 keV)-Li, Na, K-one-electron processes","journal":"Journal of Physics B: Atomic, Molecular and Optical Physics","volume":"23","page_start":"3881","page_end":"3898","article_number":"","year":1990,"note":"","doi":"10.1088/0953-4075/23/21/021","bibcode":"1990JPhB...23.3881S","url":"https://dx.doi.org/10.1088/0953-4075/23/21/021"}"""
-        stream = io.BytesIO(bytes(ref_json, encoding='utf8'))
+        stream = io.BytesIO(bytes(ref_json, encoding="utf8"))
         data = JSONParser().parse(stream)
         serializer = RefSerializer(data=data)
         self.assertTrue(serializer.is_valid())
@@ -122,8 +138,9 @@ class TestRefSerializationt(TestCase):
         self.assertEqual(ref.pk, 3)
 
         ref = Ref.objects.get(pk=3)
-        self.assertEqual(ref.title, "Single electron capture from alkali atoms by slow doubly charged ions. I. He<sup>2+</sup>(0.5-6 keV)-Li, Na, K-one-electron processes")
+        self.assertEqual(
+            ref.title,
+            "Single electron capture from alkali atoms by slow doubly charged ions. I. He<sup>2+</sup>(0.5-6 keV)-Li, Na, K-one-electron processes",
+        )
         ref = Ref.objects.get(doi="10.1088/0953-4075/23/21/021")
         self.assertEqual(ref.authors, "J. Schweinzer, H. Winter")
-
-        
