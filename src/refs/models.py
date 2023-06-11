@@ -105,11 +105,11 @@ class Ref(models.Model):
     # the Nasa/ADS Bibcode, if available.
     bibcode = models.CharField(max_length=19, blank=True)
     # a URL to the source, if available; if not provided the model will
-    # construct https://dx.doi.org/<DOI>
+    # construct https://doi.org/<DOI>
     url = models.URLField(
         blank=True,
         help_text="If not provided, this will be automatically constructed"
-        " as https://dx.doi.org/&lt;DOI&gt; if possible.",
+        " as https://doi.org/&lt;DOI&gt; if possible.",
     )
 
     # BibTeX entry as a string.
@@ -158,7 +158,7 @@ class Ref(models.Model):
         """Try to make an HTML <a> tag from the reference's DOI."""
 
         if self.doi:
-            s_url = "https://dx.doi.org/{}".format(self.doi)
+            s_url = "https://doi.org/{}".format(self.doi)
             return self._make_url_html(s_url)
         return ""
 
