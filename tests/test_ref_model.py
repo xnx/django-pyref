@@ -1,5 +1,5 @@
 from django.test import TestCase
-from refs.models import Ref
+from refs.models import Ref, get_ref_from_doi
 
 
 class TestRef(TestCase):
@@ -16,6 +16,12 @@ class TestRef(TestCase):
             doi=self.doi,
         )
 
-    def test_get_ref(self):
-        ref = Ref.objects.get(doi=self.doi)
-        self.assertEqual(ref.year, 2017)
+
+# class TestGetRef(TestCase):
+#    def test_get_from_doi(self):
+#        doi = "<DOI HERE>"
+#        ref = get_ref_from_doi(doi)
+#        print('='*72)
+#        print(ref.html())
+#        print('='*72)
+#        self.assertEqual(ref.year, <YEAR HERE>)

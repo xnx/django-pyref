@@ -28,7 +28,6 @@ class RefListAPIView(generics.ListAPIView):
     serializer_class = RefSerializer
 
     def get_queryset(self):
-
         if doi := self.kwargs.get("doi"):
             return get_list_or_404(self.queryset, doi__in=doi)
 

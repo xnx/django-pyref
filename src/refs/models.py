@@ -340,14 +340,14 @@ def get_title_from_bibcode(bibcode, fmt="html"):
         "format": s_format_dict,
     }
     # POST our request, with retries (which must be explicitly allowed in
-    # method_whitelist) on 502: Bad Gateway, 503: Service Unavailable and
+    # allowed_methods) on 502: Bad Gateway, 503: Service Unavailable and
     # 504: Gateway Timeout
     s = requests.Session()
     retries = Retry(
         total=5,
         backoff_factor=0.5,
         status_forcelist=[502, 503, 504],
-        method_whitelist=frozenset(["GET", "POST"]),
+        allowed_methods=frozenset(["GET", "POST"]),
     )
     s.mount("https://", HTTPAdapter(max_retries=retries))
     r = s.post(

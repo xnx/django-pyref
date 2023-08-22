@@ -4,7 +4,6 @@ import django_filters
 
 
 class RefFilter(django_filters.FilterSet):
-
     doi = django_filters.CharFilter(
         field_name="doi", label="Publication DOI", method="filter_by_doi"
     )
