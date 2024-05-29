@@ -8,7 +8,7 @@ long_description = (root / "README.rst").read_text(encoding="utf-8")
 
 setup(
     name="django-pyref",
-    version="0.6.4",
+    version="0.6.5",
     description="A Django app defining data models for managing "
     "bibliographic references for scientific databases.",
     long_description=long_description,
@@ -46,7 +46,6 @@ setup(
     ],
     extras_require={"dev": ["black", "coverage", "ipython"]},
     include_package_data=True,
-    data_files = [
     project_urls={
         "Bug Reports": "https://github.com/xnx/django-pyref/issues",
     },
