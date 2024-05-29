@@ -8,12 +8,12 @@ long_description = (root / "README.rst").read_text(encoding="utf-8")
 
 setup(
     name="django-pyref",
-    version="0.6.2",
+    version="0.6.3",
     description="A Django app defining data models for managing "
     "bibliographic references for scientific databases.",
     long_description=long_description,
     long_description_content_type="text/x-rst",
-    url="https://github.com/xnx/django-valem",
+    url="https://github.com/xnx/django-pyref",
     author="Christian Hill, Frances Skinner, Iouli Gordon, Robert Hargreaves,"
     " Kelly Lockhart, Dipti",
     author_email="ch.hill@iaea.org",
@@ -45,6 +45,7 @@ setup(
         "django-filter>=22.1",
     ],
     extras_require={"dev": ["black", "coverage", "ipython"]},
+    include_package_data=True,
     project_urls={
         "Bug Reports": "https://github.com/xnx/django-pyref/issues",
     },
