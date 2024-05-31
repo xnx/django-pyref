@@ -17,7 +17,7 @@ from .models import Ref
 
 
 class RefAdmin(admin.ModelAdmin):
-    search_fields = ("authors", "title", "journal")
+    search_fields = ("authors", "title", "journal", "doi")
 
 
 admin.site.register(Ref, RefAdmin)
